@@ -1,0 +1,43 @@
+FROM tomcat:7.0
+
+LABEL maintainer="Raul Victoria Martin <raul.victoria@ezentis.com>"
+LABEL version="1.1.5"
+
+RUN apt-get update -qq && apt-get install -y \
+		maven \
+		openjdk-7-jdk \
+		mysql-client \
+		subversion \
+		netcat
+
+# Define where our application will live inside the image
+ENV GONG_REPORTE_VER=1.1.5 \
+	TMP_DIR=/tmp/gongr \
+	GONG_REPORTE_HOST=gong-reporte \
+	GONG_REPORTE_PORT=8080 \
+	GONG_REPORTE_DB_HOST=db \
+	GONG_REPORTE_DB_PORT=3306 \
+	GONG_REPORTE_DB_NAME=gongr \
+	GONG_REPORTE_DB_USER=gongr \
+	GONG_REPORTE_DB_PASSWORD=gongr \
+	GONG_REPORTE_FILES=/var/opt/Gong-Reporte \
+	GONG_REPORTE_LOG=/var/log/gongr \
+	GONG_URL=http://localhost
+
+WORKDIR $TMP_DIR
+
+# Download Gong-Reporte
+RUN svn export --force https://gong.org.es/svn/gong-r/tags/GONGR_v1.1.5/GONGReporte_v$GONG_REPORTE_VER $TMP_DIR
+
+COPY docker-entrypoint.sh .
+
+COPY org-netbeans-core-1.0.jar .
+
+RUN mvn install:install-file -Dfile=./org-netbeans-core-1.0.jar \
+	 -DgroupId=org.netbeans.core -DartifactId=org-netbeans-core \
+	 -Dversion=1.0 -Dpackaging=jar && \
+	 mvn install && \
+	 rm org-netbeans-core-1.0.jar && \
+	 rm -r $CATALINA_HOME/webapps/* 
+
+CMD ./docker-entrypoint.sh
