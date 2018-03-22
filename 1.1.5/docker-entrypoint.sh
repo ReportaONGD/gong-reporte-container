@@ -4,7 +4,7 @@ until nc -z $GONG_REPORTE_DB_HOST $GONG_REPORTE_DB_PORT; do
     sleep 1
 done
 
-RUN mkdir -p $GONG_REPORTE_LOG
+mkdir -p $GONG_REPORTE_LOG
 
 	read -d '' gor_db <<EOF
 create DATABASE /*!32312 IF NOT EXISTS*/ $GONG_REPORTE_DB_NAME;
