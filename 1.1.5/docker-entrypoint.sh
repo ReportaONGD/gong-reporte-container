@@ -1,4 +1,8 @@
 #!/bin/bash
+until nc -z $GONG_REPORTE_DB_HOST $GONG_REPORTE_DB_PORT; do
+    echo "$(date) - waiting for mysql..."
+    sleep 1
+done
 
 RUN mkdir -p $GONG_REPORTE_LOG
 

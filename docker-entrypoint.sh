@@ -1,6 +1,15 @@
 #!/bin/bash
+until nc -z $GONG_REPORTE_DB_HOST $GONG_REPORTE_DB_PORT; do
+    echo "$(date) - waiting for mysql..."
+    sleep 1
+done
 
 RUN mkdir -p $GONG_REPORTE_LOG
+
+until nc -z $GONG_REPORTE_DB_HOST $MYSQL_PORT; do
+    echo "$(date) - waiting for mysql..."
+    sleep 1
+done
 
 	read -d '' gor_db <<EOF
 create DATABASE /*!32312 IF NOT EXISTS*/ $GONG_REPORTE_DB_NAME;
@@ -11,11 +20,12 @@ EOF
 	echo "$gor_db" > ./gor_db.sql
 
 
-mysql -h $GONG_REPORTE_DB_HOST -u $GONG_REPORTE_DB_USER -p$GONG_REPORTE_DB_PASSWORD < ./gor_db.sql
+mysql -h $GONG_REPORTE_DB_HOST -u root -p$MYSQL_ROOT_PASSWORD < ./gor_db.sql
 
 mysql -h $GONG_REPORTE_DB_HOST -u $GONG_REPORTE_DB_USER -p$GONG_REPORTE_DB_PASSWORD < /tmp/gongr/script_bbdd/gongr_v1.0.1.sql
 
-rm ./gor_db.sql
+#rm ./gor_db.sql
+
 
 app_config_path=$TMP_DIR/src/main/resources
 
