@@ -32,8 +32,8 @@ jdbc.password=$GONG_REPORTE_DB_PASSWORD
 hibernate.show_sql=false
 
 ws.gong_authorized_uri=$GONG_URL/oauth/authorize
-ws.gong_token_uri=$GONG_URL/oauth/token
-ws.init_url=$GONG_URL
+ws.gong_token_uri=$GONG_API_TOKEN_URL/oauth/token
+ws.init_url=$GONG_API_TOKEN_URL
 
 # datos localhost
 ws.gong_client_id=$AD_CLIENT_ID
@@ -51,7 +51,7 @@ rutaBaseDoc=$GONG_REPORTE_FILES/informes
 rutaBaseZip=$GONG_REPORTE_FILES/envios
 rutaBaseXml=$GONG_REPORTE_FILES/xml
 
-urlGongr=$GONG_URL
+urlGongr=$GONG_API_TOKEN_URL
 
 
 smtp.host.name=smtp.tuurl.com

@@ -34,3 +34,4 @@ services:
       - 8080:8080
     environment:
       - GONG_REPORTE_DB_HOST=db
+      - GONG_API_TOKEN_URL=http://gong
