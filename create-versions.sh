@@ -12,5 +12,5 @@ versions=(1.1.5)
 for version in ${versions[*]}; do
   mkdir $version
   render Dockerfile.template > $version/Dockerfile
-  cp docker-entrypoint.sh org-netbeans-core-1.0.jar $version/
+  cp docker-entrypoint.sh org-netbeans-core-1.0.jar docker-compose.yml $version/
 done

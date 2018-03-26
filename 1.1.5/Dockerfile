@@ -18,11 +18,13 @@ ENV GONG_REPORTE_VER=1.1.5 \
 	GONG_REPORTE_DB_HOST=localhost \
 	GONG_REPORTE_DB_PORT=3306 \
 	GONG_REPORTE_DB_NAME=gongr \
-	GONG_REPORTE_DB_USER=root \
+	GONG_REPORTE_DB_USERNAME=root \
 	GONG_REPORTE_DB_PASSWORD=root \
 	GONG_REPORTE_FILES=/var/opt/Gong-Reporte \
 	GONG_REPORTE_LOG=/var/log/gongr \
-	GONG_URL=http://localhost
+	GONG_URL=http://localhost \
+	AD_CLIENT_ID=71800f89-46e5-499a-b90c-f6163a90280cAA \
+	AD_CLIENT_PW=f4363b9e-12a8-421e-88ae-010d406fa208AA 
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

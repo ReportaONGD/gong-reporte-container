@@ -8,16 +8,16 @@ mkdir -p $GONG_REPORTE_LOG
 
 	read -d '' gor_db <<EOF
 create DATABASE /*!32312 IF NOT EXISTS*/ $GONG_REPORTE_DB_NAME;
-grant ALL ON $GONG_REPORTE_DB_NAME.* TO '$GONG_REPORTE_DB_USER'@'%' IDENTIFIED BY '$GONG_REPORTE_DB_PASSWORD';
+grant ALL ON $GONG_REPORTE_DB_NAME.* TO '$GONG_REPORTE_DB_USERNAME'@'%' IDENTIFIED BY '$GONG_REPORTE_DB_PASSWORD';
 EOF
 	
 	echo "Creando $gor_db"
 	echo "$gor_db" > ./gor_db.sql
 
 
-mysql -h $GONG_REPORTE_DB_HOST -u $GONG_REPORTE_DB_USER -p$GONG_REPORTE_DB_PASSWORD < ./gor_db.sql
+mysql -h $GONG_REPORTE_DB_HOST -u $GONG_REPORTE_DB_USERNAME -p$GONG_REPORTE_DB_PASSWORD < ./gor_db.sql
 
-mysql -h $GONG_REPORTE_DB_HOST -u $GONG_REPORTE_DB_USER -p$GONG_REPORTE_DB_PASSWORD < /tmp/gongr/script_bbdd/gongr_v1.0.1.sql
+mysql -h $GONG_REPORTE_DB_HOST -u $GONG_REPORTE_DB_USERNAME -p$GONG_REPORTE_DB_PASSWORD < /tmp/gongr/script_bbdd/gongr_v1.0.1.sql
 
 rm ./gor_db.sql
 
@@ -27,19 +27,18 @@ app_config_path=$TMP_DIR/src/main/resources
 jdbc.driverClassName=com.mysql.jdbc.Driver
 jdbc.dialect=org.hibernate.dialect.MySQLDialect
 jdbc.url=jdbc\:mysql\://$GONG_REPORTE_DB_HOST\:$GONG_REPORTE_DB_PORT/$GONG_REPORTE_DB_NAME
-jdbc.username=$GONG_REPORTE_DB_USER
+jdbc.username=$GONG_REPORTE_DB_USERNAME
 jdbc.password=$GONG_REPORTE_DB_PASSWORD
 hibernate.show_sql=false
 
 ws.gong_authorized_uri=$GONG_URL/oauth/authorize
-#ws.gong_token_uri=$GONG_URL/oauth/token
-ws.gong_token_uri=http://$GONG_HOST:$GONG_HOST_PORT/oauth/token
+ws.gong_token_uri=$GONG_URL/oauth/token
 ws.init_url=$GONG_URL
 
 # datos localhost
 ws.gong_client_id=$AD_CLIENT_ID
 ws.gong_secret_id=$AD_CLIENT_PW
-ws.gong_redirect_uri=$GONGR_URL/ws/authorized
+ws.gong_redirect_uri=http://$GONG_REPORTE_HOST:$GONG_REPORTE_PORT/gong_r/ws/authorized
 
 EOF
 
@@ -52,7 +51,7 @@ rutaBaseDoc=$GONG_REPORTE_FILES/informes
 rutaBaseZip=$GONG_REPORTE_FILES/envios
 rutaBaseXml=$GONG_REPORTE_FILES/xml
 
-urlGongr=http://$GONG_HOST:$GONG_HOST_PORT
+urlGongr=$GONG_URL
 
 
 smtp.host.name=smtp.tuurl.com
